@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion de Stock</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .form-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 40%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #5cb85c;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .edit,
+      .delete {
+        background-color: #5bc0de;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .delete {
+        background-color: #d9534f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gestion de Stock</h1>
+      <div class="form-container">
+        <input type="text" id="product-name" placeholder="Nom du produit" />
+        <input type="number" id="product-quantity" placeholder="Quantité" />
+        <button id="add-product">Ajouter</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom du produit</th>
+            <th>Quantité</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="product-list">
+          <!-- Les produits seront ajoutés ici -->
+        </tbody>
+      </table>
+    </div>
+    <script>
+      document
+        .getElementById("add-product")
+        .addEventListener("click", addProduct);
+
+      function addProduct() {
+        const name = document.getElementById("product-name").value;
+        const quantity = document.getElementById("product-quantity").value;
+
+        if (name === "" || quantity === "") {
+          alert("Veuillez remplir tous les champs");
+          return;
+        }
+
+        const productList = document.getElementById("product-list");
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+                <td>${name}</td>
+                <td>${quantity}</td>
+                <td>
+                    <button class="edit">Modifier</button>
+                    <button class="delete">Supprimer</button>
+                </td>
+            `;
+
+        productList.appendChild(row);
+
+        document.getElementById("product-name").value = "";
+        document.getElementById("product-quantity").value = "";
+
+        row
+          .querySelector(".edit")
+          .addEventListener("click", () => editProduct(row));
+        row
+          .querySelector(".delete")
+          .addEventListener("click", () => deleteProduct(row));
+      }
+
+      function editProduct(row) {
+        const name = row.children[0].textContent;
+        const quantity = row.children[1].textContent;
+
+        document.getElementById("product-name").value = name;
+        document.getElementById("product-quantity").value = quantity;
+
+        deleteProduct(row);
+      }
+
+      function deleteProduct(row) {
+        row.remove();
+      }
+    </script>
+  </body>
+</html>
